@@ -25,7 +25,7 @@
     // TODO: Skriv ut tidigare kommentarer på ens profil
     }
     else {
-        print("Du försöker se på nån annans profil")
+        print("Du försöker se på nån annans profil");
     }
     ?>
 

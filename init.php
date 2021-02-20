@@ -15,13 +15,13 @@ function test_input($data)
 function create_conn()
 {
     //Databaskonfiguration
-    $servername = "localhost";
+    $servername = "localhost:3306";
     $username = "hellstjo";
     $password = "q9LwXZhyn6";
     $dbname = "hellstjo";
 
     // Create connection
-    $conn = new mysqli($servername, $username, $password, $dbname);
+     $conn = new mysqli($servername, $username, $password, $dbname);
 
     // FIXA UTF8 - encoding
     $conn->set_charset("utf8");
@@ -33,4 +33,4 @@ function create_conn()
         return $conn;
     }
 }
-$conn - create_conn();
+// $conn - create_conn();
