@@ -1,4 +1,8 @@
-<!-- Login formulär
+<?php 
+    session_start();
+?>
+
+<!-- Login formulär -->
 <form action="index.php" method="post">
     Användarnamn <br><input type="text" name=" usr"><br>
     Lösenord <br><input type="password" name="psw"><br>
@@ -6,105 +10,117 @@
     <input type="submit" value="Logga in">
 </form>
 <?php
-    // if(isset($_REQUEST['stage']) && $_REQUEST['stage'] == 'login') {
-    //     print("loggar in om 2 sekunder...");
-    //     $_SESSION['user'] = "Joel";
-    //     header("refresh:2;url=./profile.php");
-        //header("location: ./profile.php); Redirect user on login
-    // }
-?> -->
-
-
-
-
-<?php
-// Initialize the session
-session_start();
- 
-// Check if the user is already logged in, if yes then redirect him to welcome page
-if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
-    header("location: welcome.php");
-    exit;
-}
- 
-// Define variables and initialize with empty values
-$username = $password = "";
-$username_err = $password_err = "";
- 
-// Processing form data when form is submitted
-if($_SERVER["REQUEST_METHOD"] == "POST"){
- 
-    // Check if username is empty
-    if(empty(trim($_POST["username"]))){
-        $username_err = "Please enter username.";
-    } else{
-        $username = trim($_POST["username"]);
-    }
     
-    // Check if password is empty
-    if(empty(trim($_POST["password"]))){
-        $password_err = "Please enter your password.";
-    } else{
-        $password = trim($_POST["password"]);
-    }
-    
-    // Validate credentials
-    if(empty($username_err) && empty($password_err)){
-        // Prepare a select statement
-        $sql = "SELECT id, username, password FROM users WHERE username = ?";
-        
-        if($stmt = mysqli_prepare($link, $sql)){
-            // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "s", $param_username);
-            
-            // Set parameters
-            $param_username = $username;
-            
-            // Attempt to execute the prepared statement
-            if(mysqli_stmt_execute($stmt)){
-                // Store result
-                mysqli_stmt_store_result($stmt);
-                
-                // Check if username exists, if yes then verify password
-                if(mysqli_stmt_num_rows($stmt) == 1){                    
-                    // Bind result variables
-                    mysqli_stmt_bind_result($stmt, $id, $username, $hashed_password);
-                    if(mysqli_stmt_fetch($stmt)){
-                        if(password_verify($password, $hashed_password)){
-                            // Password is correct, so start a new session
-                            session_start();
-                            
-                            // Store data in session variables
-                            $_SESSION["loggedin"] = true;
-                            $_SESSION["id"] = $id;
-                            $_SESSION["username"] = $username;                            
-                            
-                            // Redirect user to welcome page
-                            header("location: welcome.php");
-                        } else{
-                            // Display an error message if password is not valid
-                            $password_err = "The password you entered was not valid.";
-                        }
-                    }
-                } else{
-                    // Display an error message if username doesn't exist
-                    $username_err = "No account found with that username.";
-                }
-            } else{
-                echo "Oops! Something went wrong. Please try again later.";
-            }
-
-            // Close statement
-            mysqli_stmt_close($stmt);
+    $usr = $_POST["usr"];
+    $psw = $_POST["psw"];
+         
+    if(isset($_REQUEST['stage']) && $_REQUEST['stage'] == 'login') {
+        if(empty($usr) && empty($psw)){
+            print ("<p> Please enter password and username");
+        }
+        elseif(match_found_in_database($usr)){
+            $_SESSION['user'] = $usr;
+            $_SESSION['LoggedIn'] = true;
+            print("loggar in om 2 sekunder...");
+            header("refresh:2;url=./profile.php");
+            header("location: ./profile.php"); //Redirect user on login
         }
     }
+        
     
-    // Close connection
-    mysqli_close($link);
-}
+?>
+
+
+
+
+ <?php
+// Initialize the session
+// session_start();
+ 
+// // Check if the user is already logged in, if yes then redirect him to welcome page
+// if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
+//     header("location: welcome.php");
+//     exit;
+// }
+ 
+// // Define variables and initialize with empty values
+// $username = $password = "";
+// $username_err = $password_err = "";
+ 
+// // Processing form data when form is submitted
+// if($_SERVER["REQUEST_METHOD"] == "POST"){
+ 
+//     // Check if username is empty
+//     if(empty(trim($_POST["username"]))){
+//         $username_err = "Please enter username.";
+//     } else{
+//         $username = trim($_POST["username"]);
+//     }
+    
+//     // Check if password is empty
+//     if(empty(trim($_POST["password"]))){
+//         $password_err = "Please enter your password.";
+//     } else{
+//         $password = trim($_POST["password"]);
+//     }
+    
+//     // Validate credentials
+//     if(empty($username_err) && empty($password_err)){
+//         // Prepare a select statement
+//         $sql = "SELECT id, username, password FROM users WHERE username = ?";
+        
+//         if($stmt = mysqli_prepare($link, $sql)){
+//             // Bind variables to the prepared statement as parameters
+//             mysqli_stmt_bind_param($stmt, "s", $param_username);
+            
+//             // Set parameters
+//             $param_username = $username;
+            
+//             // Attempt to execute the prepared statement
+//             if(mysqli_stmt_execute($stmt)){
+//                 // Store result
+//                 mysqli_stmt_store_result($stmt);
+                
+//                 // Check if username exists, if yes then verify password
+//                 if(mysqli_stmt_num_rows($stmt) == 1){                    
+//                     // Bind result variables
+//                     mysqli_stmt_bind_result($stmt, $id, $username, $hashed_password);
+//                     if(mysqli_stmt_fetch($stmt)){
+//                         if(password_verify($password, $hashed_password)){
+//                             // Password is correct, so start a new session
+//                             session_start();
+                            
+//                             // Store data in session variables
+//                             $_SESSION["loggedin"] = true;
+//                             $_SESSION["id"] = $id;
+//                             $_SESSION["username"] = $username;                            
+                            
+//                             // Redirect user to welcome page
+//                             header("location: welcome.php");
+//                         } else{
+//                             // Display an error message if password is not valid
+//                             $password_err = "The password you entered was not valid.";
+//                         }
+//                     }
+//                 } else{
+//                     // Display an error message if username doesn't exist
+//                     $username_err = "No account found with that username.";
+//                 }
+//             } else{
+//                 echo "Oops! Something went wrong. Please try again later.";
+//             }
+
+//             // Close statement
+//             mysqli_stmt_close($stmt);
+//         }
+//     }
+    
+//     // Close connection
+//     mysqli_close($link);
+// }
 ?>
  
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -132,4 +148,4 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         </form>
     </div>    
 </body>
-</html>
+</html> -->

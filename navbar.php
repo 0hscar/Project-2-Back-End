@@ -1,4 +1,4 @@
-
+<?php session_start(); ?>
 
 <nav>
     <!-- Logo och meny finns i nav -->

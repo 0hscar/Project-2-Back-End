@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <?php include "init.php" ?>
 <?php include "head.php" ?>
 
@@ -31,8 +32,19 @@
     </form>
     </p>
 
+    <?php 
+    if (isset($_SESSION['LoggedIn']) && $_SESSION['LoggedIn'] == true) {
+        echo "Welcome ". $_SESSION['user']."!";
+        include "fetch.php";
+    }
+    
+    else {
+        echo "Please Log in first!";
+    }
+            
+    ?>
 
-    <?php include "fetch.php" ?>
+
 </article>
 
 <?php include "footer.php" ?>

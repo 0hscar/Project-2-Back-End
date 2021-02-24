@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <?php include "init.php" ?>
 <?php include "head.php" ?>
 
@@ -10,10 +11,9 @@
 
      <?php 
      // Om ni inte lyckas - gör såhär tillvidare
-     $_SESSION['user'] = "dennis";
 
      // Om man klickat på register knappen är stage set - includea register.php
-     if (isset($_REQUEST['stage']) && ($_REQUEST['stage'] == 'signup') ){
+     if (isset($_REQUEST['stage']) && ($_REQUEST['stage'] == 'signup' || $_REQUEST['stage'] == 'register' ) ){
         include "register.php";
      }
      // TODO: Om man klickat på login knappen - includea register.php

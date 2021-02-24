@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <?php
 //om man har sortrerat/ filtrerar
 if(isset($_REQUEST['salary'])){
