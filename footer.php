@@ -1,7 +1,7 @@
-<?php session_start(); ?>
+
 </section>
 
-<footer>Made by Dennis</footer>
+<footer>Weber & Joel</footer>
 
 </body>
 

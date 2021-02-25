@@ -2,22 +2,34 @@
 <?php
 //om man har sortrerat/ filtrerar
 if(isset($_REQUEST['salary'])){
-    print("filtrerar...");
+    print("<br>filtrerar...");
     // Skapa SQL kommando
     $sql ="SELECT * FROM users ORDER BY salary DESC";
-    fetchAndWrite($sql);
+    if (isset($_SESSION['LoggedIn']) && $_SESSION['LoggedIn'] == true){
+        fetchAndWrite($sql);
+    }
+    else{
+        fetchAndWriteNoUser($sql);
+    }
+    
 } 
 
 // om man inte tryckt på filtrera
 else if(!isset($_REQUEST['salary'])) {
     // Skapa SQL kommando
     $sql ="SELECT * FROM users";
-    fetchAndWrite($sql);
+    if (isset($_SESSION['LoggedIn']) && $_SESSION['LoggedIn'] == true){
+        fetchAndWrite($sql);
+    }
+    else{
+        fetchAndWriteNoUser($sql);
+    }
+    
 }
 
 
 function fetchAndWrite($sql) {
-    // Skapa databasuppkoppling
+    // Skapa databasuppkoppling--
     $conn = create_conn();
     // kör SQL kommando på databasen
     if ($result = $conn->query($sql)){
@@ -35,3 +47,15 @@ function fetchAndWrite($sql) {
         print("något gick fel, senaste felet: " . $conn->error);
     }
 }
+function fetchAndWriteNoUser($sql){
+    $conn = create_conn();
+
+    if ($result = $conn->query($sql)){
+        while($row = $result->fetch_assoc()){
+            print("<p class='ad'>");
+            print("Användare i database: " . $row['username'] . "<br>");
+
+        }
+    }
+}
+

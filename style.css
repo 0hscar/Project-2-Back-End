@@ -113,3 +113,9 @@ footer {
         margin-top: 10px;   /* Lite space mellan meny och logo */
     }
 }
+.pic {
+    width: 800px;
+}
+.pic:hover {
+    transform: scale(1.5);
+}

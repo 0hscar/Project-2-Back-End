@@ -20,7 +20,7 @@
         <input type="radio" name="likes" value="notpop">
     
         <!-- Dropdown för preferens -->
-        <label for="pref">Preferens</label><br>
+        <br/><label for="pref">Preferens</label><br>
         <select name="pref">
             <option value="male">Manlig</option>
             <option value="female">Kvinnlig</option>
@@ -34,12 +34,11 @@
 
     <?php 
     if (isset($_SESSION['LoggedIn']) && $_SESSION['LoggedIn'] == true) {
-        echo "Welcome ". $_SESSION['user']."!";
+        echo "Welcome ". $_SESSION['user']['username']."!";
         include "fetch.php";
     }
-    
     else {
-        echo "Please Log in first!";
+        include "fetch.php";
     }
             
     ?>
